@@ -2,7 +2,7 @@
   "name": "node-example",
   "version": "0.0.1",
   "dependencies": {
-    "http-proxy": "^1.16.2"
+    "http-proxy": "*"
   },
   "engines": {
     "node": "0.8.x",

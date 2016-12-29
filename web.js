@@ -1,16 +1,19 @@
-var express = require('express');
-
-var app = express.createServer(express.logger());
-
-app.get('*', function(request, response) {
-  response.redirect(process.env.NEW_BASE_URL + request.url)
-});
-
-app.post('*', function(request, response) {
-  response.redirect(process.env.NEW_BASE_URL + request.url)
-});
-
+var httpProxy = require('http-proxy');
 var port = process.env.PORT || 5000;
-app.listen(port, function() {
-  console.log("Listening on " + port);
+var server = process.env.NEW_BASE_URL;
+var proxy = httpProxy.createServer({
+  target: server,
+  xfwd: true,
+  changeOrigin: false,
+  autoRewrite: true
+});
+
+proxy.listen(port);
+
+proxy.on('error', function (err, req, res) {
+  res.writeHead(500, {
+    'Content-Type': 'text/plain'
+  });
+
+  res.end('Something went wrong. And we are reporting a custom error message.');
 });
